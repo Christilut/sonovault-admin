@@ -11,7 +11,9 @@ export interface ImportDaySummary {
   total: number
 }
 
-export async function getImportHistory(): Promise<ImportDaySummary[]> {
-  const response = await apiClient.get<ImportDaySummary[]>('/admin/import-history')
+export async function getImportHistory(days: number = 30): Promise<ImportDaySummary[]> {
+  const response = await apiClient.get<ImportDaySummary[]>('/admin/import-history', {
+    params: { days }
+  })
   return response.data
 }
