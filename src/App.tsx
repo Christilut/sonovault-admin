@@ -7,6 +7,9 @@ import ArtistPage from '@/pages/ArtistPage'
 import ReleasePage from '@/pages/ReleasePage'
 import ImportHistoryPage from '@/pages/ImportHistoryPage'
 import SystemMonitorPage from '@/pages/SystemMonitorPage'
+import StatisticsPage from '@/pages/StatisticsPage'
+import FallbacksPage from '@/pages/FallbacksPage'
+import DbHealthPage from '@/pages/DbHealthPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth()
@@ -33,7 +36,10 @@ export default function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/artists/:id" element={<ArtistPage />} />
         <Route path="/releases/:id" element={<ReleasePage />} />
+        <Route path="/statistics" element={<StatisticsPage />} />
+        <Route path="/fallbacks" element={<FallbacksPage />} />
         <Route path="/imports" element={<ImportHistoryPage />} />
+        <Route path="/db-health" element={<DbHealthPage />} />
         <Route path="/monitor" element={<SystemMonitorPage />} />
       </Route>
     </Routes>
