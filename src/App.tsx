@@ -9,21 +9,18 @@ import ImportHistoryPage from '@/pages/ImportHistoryPage'
 import SystemMonitorPage from '@/pages/SystemMonitorPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth()
-  if (isLoading) return null
+  const { isAuthenticated } = useAuth()
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />
 }
 
 export default function App() {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated } = useAuth()
 
   return (
     <Routes>
       <Route
         path="/login"
-        element={
-          isLoading ? null : isAuthenticated ? <Navigate to="/search" /> : <LoginPage />
-        }
+        element={isAuthenticated ? <Navigate to="/search" /> : <LoginPage />}
       />
       <Route
         element={
