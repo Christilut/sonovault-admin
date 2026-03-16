@@ -41,7 +41,7 @@ export default function HorizontalBarChart({ data, onBarClick }: Props) {
       legend: { display: false },
       tooltip: {
         callbacks: {
-          label: (ctx: { parsed: { x: number } }) => `${ctx.parsed.x.toLocaleString()} hits`
+          label: (ctx: { parsed: { x: number | null } }) => `${(ctx.parsed.x ?? 0).toLocaleString()} hits`
         }
       }
     },

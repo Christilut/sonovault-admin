@@ -115,8 +115,8 @@ export default function ImportHistoryPage() {
       },
       tooltip: {
         callbacks: {
-          label: (ctx: { dataset: { label?: string }; parsed: { y: number } }) =>
-            `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()} tracks`
+          label: (ctx: { dataset: { label?: string }; parsed: { y: number | null } }) =>
+            `${ctx.dataset.label}: ${(ctx.parsed.y ?? 0).toLocaleString()} tracks`
         }
       }
     },
