@@ -170,64 +170,29 @@ export default function ImportHistoryPage() {
               No import history found in the last 30 days
             </div>
           ) : (
-            <div className="space-y-4">
-              {sortedDates.map(date => (
-                <div key={date} className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 overflow-hidden">
-                  <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-800">
-                    <span className="font-medium text-gray-700 dark:text-gray-300">{formatDate(date)}</span>
-                    <span className="text-gray-400 text-sm ml-2">{date.split('T')[0]}</span>
-                  </div>
-                  <div className="divide-y divide-gray-100 dark:divide-gray-800">
-                    {grouped[date].map(item => (
-                      <div key={`${date}-${item.source}`} className="px-4 py-4">
-                        <div className="flex items-center gap-3 mb-3">
-                          <span
-                            className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium text-white"
-                            style={{ backgroundColor: getSourceColor(item.source) }}
-                          >
-                            {getSourceLabel(item.source)}
-                          </span>
-                          <span className="text-sm text-gray-500 dark:text-gray-400">
-                            {item.total.toLocaleString()} items imported
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-5 gap-4">
-                          {item.tracks > 0 && (
-                            <div className="text-center">
-                              <div className="text-2xl font-semibold text-gray-800 dark:text-white/90">{item.tracks.toLocaleString()}</div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">Tracks</div>
-                            </div>
-                          )}
-                          {item.releases > 0 && (
-                            <div className="text-center">
-                              <div className="text-2xl font-semibold text-gray-800 dark:text-white/90">{item.releases.toLocaleString()}</div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">Releases</div>
-                            </div>
-                          )}
-                          {item.artists > 0 && (
-                            <div className="text-center">
-                              <div className="text-2xl font-semibold text-gray-800 dark:text-white/90">{item.artists.toLocaleString()}</div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">Artists</div>
-                            </div>
-                          )}
-                          {item.labels > 0 && (
-                            <div className="text-center">
-                              <div className="text-2xl font-semibold text-gray-800 dark:text-white/90">{item.labels.toLocaleString()}</div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">Labels</div>
-                            </div>
-                          )}
-                          {item.genres > 0 && (
-                            <div className="text-center">
-                              <div className="text-2xl font-semibold text-gray-800 dark:text-white/90">{item.genres.toLocaleString()}</div>
-                              <div className="text-xs text-gray-500 dark:text-gray-400">Genres</div>
-                            </div>
-                          )}
-                        </div>
+            <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 overflow-hidden">
+              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                {sortedDates.map(date => (
+                  grouped[date].map(item => (
+                    <div key={`${date}-${item.source}`} className="flex items-center gap-4 px-4 py-3">
+                      <span className="text-sm text-gray-500 dark:text-gray-400 w-28 shrink-0">{formatDate(date)}</span>
+                      <span
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white w-20 justify-center shrink-0"
+                        style={{ backgroundColor: getSourceColor(item.source) }}
+                      >
+                        {getSourceLabel(item.source)}
+                      </span>
+                      <div className="flex items-center gap-4 text-sm">
+                        {item.tracks > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.tracks.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">tracks</span></span>}
+                        {item.releases > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.releases.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">releases</span></span>}
+                        {item.artists > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.artists.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">artists</span></span>}
+                        {item.labels > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.labels.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">labels</span></span>}
+                        {item.genres > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.genres.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">genres</span></span>}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                    </div>
+                  ))
+                ))}
+              </div>
             </div>
           )}
         </>
