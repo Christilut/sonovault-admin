@@ -20,7 +20,6 @@ export default function SystemMonitorPage() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800 dark:text-white/90">System Monitor</h1>
-          <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Live server resource usage via btop</p>
         </div>
         {!error && (
           <div className="flex items-center gap-2">
