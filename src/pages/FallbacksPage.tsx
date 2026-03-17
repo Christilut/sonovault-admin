@@ -102,11 +102,11 @@ export default function FallbacksPage() {
                         <tr
                           key={entry.id}
                           className={got
-                            ? 'border-l-4 border-l-success-500 bg-success-50 dark:bg-success-500/10'
-                            : 'border-l-4 border-l-error-400 bg-error-50 dark:bg-error-500/10'
+                            ? 'bg-success-50 dark:bg-success-500/10'
+                            : 'bg-error-50 dark:bg-error-500/10'
                           }
                         >
-                          <td className="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{formatTimestamp(entry.createdAt)}</td>
+                          <td className={`py-3 pl-1 pr-4 whitespace-nowrap text-gray-600 dark:text-gray-300 border-l-4 ${got ? 'border-l-success-500' : 'border-l-error-400'}`}><span className="pl-3">{formatTimestamp(entry.createdAt)}</span></td>
                           <td className="px-4 py-3 text-gray-800 dark:text-white/90 max-w-xs truncate" title={entry.originalQuery}>{entry.originalQuery}</td>
                           <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{entry.spotifyCount}</td>
                           <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{entry.beatportCount}</td>
