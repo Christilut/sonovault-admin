@@ -118,6 +118,7 @@ export default function ApiUsagePage() {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
+      datalabels: { display: false },
       legend: {
         position: 'top' as const,
         labels: {

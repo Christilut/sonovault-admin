@@ -48,8 +48,8 @@ export default function HorizontalBarChart({ data, onBarClick }: Props) {
       datalabels: {
         anchor: 'end' as const,
         align: 'right' as const,
-        color: '#6B7280',
-        font: { size: 11 },
+        color: '#111827',
+        font: { size: 11, weight: 'bold' as const },
         formatter: (value: number) => value > 0 ? value.toLocaleString() : ''
       }
     },
@@ -66,7 +66,7 @@ export default function HorizontalBarChart({ data, onBarClick }: Props) {
         grid: { display: false },
         ticks: {
           font: { size: 12 },
-          color: '#6B7280',
+          color: '#374151',
           callback: function(_: unknown, index: number) {
             const label = data[index]?.label || ''
             return label.length > 40 ? label.substring(0, 37) + '...' : label

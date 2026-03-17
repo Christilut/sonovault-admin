@@ -102,8 +102,8 @@ export default function FallbacksPage() {
                         <tr
                           key={entry.id}
                           className={got
-                            ? 'bg-success-50/50 dark:bg-success-500/5 hover:bg-success-50 dark:hover:bg-success-500/10'
-                            : 'bg-error-50/50 dark:bg-error-500/5 hover:bg-error-50 dark:hover:bg-error-500/10'
+                            ? 'border-l-4 border-l-success-500 bg-success-50 dark:bg-success-500/10'
+                            : 'border-l-4 border-l-error-400 bg-error-50 dark:bg-error-500/10'
                           }
                         >
                           <td className="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{formatTimestamp(entry.createdAt)}</td>
