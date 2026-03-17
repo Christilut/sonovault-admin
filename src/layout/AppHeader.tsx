@@ -25,9 +25,9 @@ export default function AppHeader() {
   return (
     <header className="sticky top-0 flex w-full bg-white border-gray-200 z-[99999] dark:border-gray-800 dark:bg-gray-900 lg:border-b">
       <div className="flex items-center justify-between flex-grow px-4 py-3 lg:px-6 lg:py-4">
-        {/* Left: hamburger */}
+        {/* Left: hamburger (mobile only) */}
         <button
-          className="flex items-center justify-center w-10 h-10 text-gray-500 rounded-lg dark:text-gray-400 lg:h-11 lg:w-11 lg:border lg:border-gray-200 dark:lg:border-gray-800"
+          className="flex items-center justify-center w-10 h-10 text-gray-500 rounded-lg dark:text-gray-400 lg:hidden"
           onClick={handleToggle}
         >
           {isMobileOpen ? (
