@@ -78,6 +78,7 @@ export default function ImportHistoryPage() {
 
     const spotifyData = days.map(d => tracksByDateSource[d]?.[0] ?? 0)
     const beatportData = days.map(d => tracksByDateSource[d]?.[1] ?? 0)
+    const discogsData = days.map(d => tracksByDateSource[d]?.[2] ?? 0)
     const labels = days.map(formatShortDate)
 
     return {
@@ -93,6 +94,12 @@ export default function ImportHistoryPage() {
           label: 'Beatport',
           data: beatportData,
           backgroundColor: getSourceColor(1),
+          borderRadius: 3,
+        },
+        {
+          label: 'Discogs',
+          data: discogsData,
+          backgroundColor: getSourceColor(2),
           borderRadius: 3,
         }
       ]
