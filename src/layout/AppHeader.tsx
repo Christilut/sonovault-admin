@@ -42,7 +42,7 @@ export default function AppHeader() {
         </button>
 
         {/* Right: theme toggle + logout */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ml-auto">
           {/* Theme toggle */}
           <button
             onClick={toggleTheme}

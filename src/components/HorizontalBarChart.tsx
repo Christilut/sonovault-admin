@@ -7,6 +7,7 @@ import {
   Tooltip
 } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { useTheme } from '@/context/ThemeContext'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, ChartDataLabels)
 
@@ -22,6 +23,10 @@ interface Props {
 }
 
 export default function HorizontalBarChart({ data, onBarClick }: Props) {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  const textColor = isDark ? '#f3f4f6' : '#374151'
+
   const chartData = {
     labels: data.map(d => d.label),
     datasets: [
@@ -48,7 +53,7 @@ export default function HorizontalBarChart({ data, onBarClick }: Props) {
       datalabels: {
         anchor: 'end' as const,
         align: 'right' as const,
-        color: '#111827',
+        color: textColor,
         font: { size: 11, weight: 'bold' as const },
         formatter: (value: number) => value > 0 ? value.toLocaleString() : ''
       }
@@ -66,7 +71,7 @@ export default function HorizontalBarChart({ data, onBarClick }: Props) {
         grid: { display: false },
         ticks: {
           font: { size: 12 },
-          color: '#374151',
+          color: textColor,
           callback: function(_: unknown, index: number) {
             const label = data[index]?.label || ''
             return label.length > 40 ? label.substring(0, 37) + '...' : label
