@@ -34,7 +34,7 @@ export default function HorizontalBarChart({ data, onBarClick }: Props) {
         data: data.map(d => d.value),
         backgroundColor: '#16A34A',
         borderRadius: 3,
-        barThickness: 20,
+        barThickness: 14,
       }
     ]
   }
@@ -86,7 +86,7 @@ export default function HorizontalBarChart({ data, onBarClick }: Props) {
     }
   }
 
-  const height = Math.max(300, data.length * 28)
+  const height = Math.max(300, data.length * 22)
 
   return (
     <div style={{ height }}>
