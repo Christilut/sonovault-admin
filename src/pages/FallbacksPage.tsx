@@ -46,6 +46,14 @@ export default function FallbacksPage() {
   const avgDuration = entries.length > 0
     ? Math.round(entries.reduce((sum, e) => sum + e.apiDurationMs, 0) / entries.length)
     : 0
+  const spotifyEntries = entries.filter(e => e.spotifyCount > 0)
+  const beatportEntries = entries.filter(e => e.beatportCount > 0)
+  const avgSpotifyDuration = spotifyEntries.length > 0
+    ? Math.round(spotifyEntries.reduce((sum, e) => sum + e.apiDurationMs, 0) / spotifyEntries.length)
+    : 0
+  const avgBeatportDuration = beatportEntries.length > 0
+    ? Math.round(beatportEntries.reduce((sum, e) => sum + e.apiDurationMs, 0) / beatportEntries.length)
+    : 0
 
   return (
     <div>
@@ -67,14 +75,21 @@ export default function FallbacksPage() {
       {!loading && !error && (
         <>
           {/* Summary cards */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 p-5">
               <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Total Fallbacks</div>
               <div className="text-3xl font-semibold text-gray-800 dark:text-white/90">{total.toLocaleString()}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Avg {avgDuration}ms</div>
             </div>
             <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 p-5">
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Avg API Duration</div>
-              <div className="text-3xl font-semibold text-gray-800 dark:text-white/90">{avgDuration}ms</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Spotify</div>
+              <div className="text-3xl font-semibold text-gray-800 dark:text-white/90">{spotifyEntries.length.toLocaleString()}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Avg {avgSpotifyDuration}ms</div>
+            </div>
+            <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 p-5">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Beatport</div>
+              <div className="text-3xl font-semibold text-gray-800 dark:text-white/90">{beatportEntries.length.toLocaleString()}</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">Avg {avgBeatportDuration}ms</div>
             </div>
           </div>
 
