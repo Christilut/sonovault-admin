@@ -82,11 +82,7 @@ export default function ApiUsagePage() {
 
     const dbHitsData = days.map(d => byDate[d]?.dbHits ?? 0)
     const dbMissesData = days.map(d => byDate[d]?.dbMisses ?? 0)
-    const otherData = days.map(d => {
-      const row = byDate[d]
-      if (!row) return 0
-      return Math.max(0, row.requestsIn - row.dbHits - row.dbMisses)
-    })
+    const requestsInData = days.map(d => byDate[d]?.requestsIn ?? 0)
     const labels = days.map(formatShortDate)
 
     return {
@@ -103,14 +99,9 @@ export default function ApiUsagePage() {
           data: dbMissesData,
           backgroundColor: '#F59E0B',
           borderRadius: 3,
-        },
-        {
-          label: 'Other',
-          data: otherData,
-          backgroundColor: '#9CA3AF',
-          borderRadius: 3,
         }
-      ]
+      ],
+      _requestsIn: requestsInData,
     }
   }, [entries, range])
 
@@ -133,7 +124,13 @@ export default function ApiUsagePage() {
         mode: 'index' as const,
         callbacks: {
           label: (ctx: { dataset: { label?: string }; parsed: { y: number | null } }) =>
-            `${ctx.dataset.label}: ${(ctx.parsed.y ?? 0).toLocaleString()} requests`
+            `${ctx.dataset.label}: ${(ctx.parsed.y ?? 0).toLocaleString()}`,
+          footer: (items: { dataIndex: number }[]) => {
+            if (items.length === 0) return ''
+            const idx = items[0].dataIndex
+            const total = (chartData as unknown as { _requestsIn: number[] })._requestsIn?.[idx] ?? 0
+            return `Total Requests: ${total.toLocaleString()}`
+          }
         }
       }
     },
