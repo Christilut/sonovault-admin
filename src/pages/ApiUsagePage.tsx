@@ -130,6 +130,7 @@ export default function ApiUsagePage() {
         }
       },
       tooltip: {
+        mode: 'index' as const,
         callbacks: {
           label: (ctx: { dataset: { label?: string }; parsed: { y: number | null } }) =>
             `${ctx.dataset.label}: ${(ctx.parsed.y ?? 0).toLocaleString()} requests`
