@@ -90,6 +90,25 @@ export async function getFallbackLogs(startDate: string, endDate: string): Promi
   return response.data
 }
 
+export interface ApiUsageEntry {
+  date: string
+  apiKeyLabel: string
+  requestsIn: number
+  results: number
+  noResults: number
+  dbHits: number
+  dbMisses: number
+  spotifyHits: number
+  beatportHits: number
+}
+
+export async function getApiUsageStats(startDate: string, endDate: string): Promise<ApiUsageEntry[]> {
+  const response = await apiClient.get<ApiUsageEntry[]>('/admin/stats/api-usage', {
+    params: { startDate, endDate }
+  })
+  return response.data
+}
+
 export async function getLatencyStats(): Promise<LatencyStats> {
   const response = await apiClient.get<LatencyStats>('/admin/stats/latency')
   return response.data

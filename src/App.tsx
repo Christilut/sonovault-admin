@@ -10,6 +10,7 @@ import SystemMonitorPage from '@/pages/SystemMonitorPage'
 import StatisticsPage from '@/pages/StatisticsPage'
 import FallbacksPage from '@/pages/FallbacksPage'
 import DbHealthPage from '@/pages/DbHealthPage'
+import ApiUsagePage from '@/pages/ApiUsagePage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth()
@@ -38,6 +39,7 @@ export default function App() {
         <Route path="/releases/:id" element={<ReleasePage />} />
         <Route path="/statistics" element={<StatisticsPage />} />
         <Route path="/fallbacks" element={<FallbacksPage />} />
+        <Route path="/api-usage" element={<ApiUsagePage />} />
         <Route path="/imports" element={<ImportHistoryPage />} />
         <Route path="/db-health" element={<DbHealthPage />} />
         <Route path="/monitor" element={<SystemMonitorPage />} />
