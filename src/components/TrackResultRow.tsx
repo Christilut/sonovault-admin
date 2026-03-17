@@ -82,7 +82,7 @@ export default function TrackResultRow({ track }: { track: TrackSearchResult }) 
             {track.genres.map((genre, idx) => (
               <span
                 key={idx}
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium text-white"
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium text-white dark:text-gray-900"
                 style={{ backgroundColor: getSourceColor(genre.source) }}
               >
                 {genre.name}

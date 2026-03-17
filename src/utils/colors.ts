@@ -12,7 +12,7 @@ export const thirdPartyColors = {
   soundcloud: '#ff5500',
   facebook: '#4267b2',
   discord: '#7289da',
-  spotify: '#2dd4bf',
+  spotify: '#f9a8d4',
   youtube: '#c4302b',
   apple: '#ffffff',
   tidal: '#000000',

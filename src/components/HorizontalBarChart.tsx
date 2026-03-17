@@ -6,8 +6,9 @@ import {
   BarElement,
   Tooltip
 } from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip)
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, ChartDataLabels)
 
 interface BarItem {
   label: string
@@ -43,7 +44,17 @@ export default function HorizontalBarChart({ data, onBarClick }: Props) {
         callbacks: {
           label: (ctx: { parsed: { x: number | null } }) => `${(ctx.parsed.x ?? 0).toLocaleString()} hits`
         }
+      },
+      datalabels: {
+        anchor: 'end' as const,
+        align: 'right' as const,
+        color: '#6B7280',
+        font: { size: 11 },
+        formatter: (value: number) => value > 0 ? value.toLocaleString() : ''
       }
+    },
+    layout: {
+      padding: { right: 50 }
     },
     scales: {
       x: {

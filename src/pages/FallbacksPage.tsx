@@ -13,6 +13,17 @@ function formatTimestamp(ts: string): string {
   return new Date(ts).toLocaleString()
 }
 
+function durationColor(ms: number): string {
+  if (ms >= 15000) return 'text-error-500'
+  if (ms >= 5000) return 'text-error-500'
+  if (ms >= 2000) return 'text-warning-500'
+  return 'text-gray-600 dark:text-gray-300'
+}
+
+function hasResult(entry: FallbackLogEntry): boolean {
+  return entry.ingested > 0 || entry.spotifyCount > 0 || entry.beatportCount > 0
+}
+
 export default function FallbacksPage() {
   const [range, setRange] = useState<DateRangeValue>(defaultRange)
   const [entries, setEntries] = useState<FallbackLogEntry[]>([])
@@ -85,16 +96,32 @@ export default function FallbacksPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                    {entries.map(entry => (
-                      <tr key={entry.id} className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
-                        <td className="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{formatTimestamp(entry.createdAt)}</td>
-                        <td className="px-4 py-3 text-gray-800 dark:text-white/90 max-w-xs truncate" title={entry.originalQuery}>{entry.originalQuery}</td>
-                        <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{entry.spotifyCount}</td>
-                        <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{entry.beatportCount}</td>
-                        <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{entry.ingested}</td>
-                        <td className="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{Math.round(entry.apiDurationMs)}ms</td>
-                      </tr>
-                    ))}
+                    {entries.map(entry => {
+                      const got = hasResult(entry)
+                      return (
+                        <tr
+                          key={entry.id}
+                          className={got
+                            ? 'bg-success-50/50 dark:bg-success-500/5 hover:bg-success-50 dark:hover:bg-success-500/10'
+                            : 'bg-error-50/50 dark:bg-error-500/5 hover:bg-error-50 dark:hover:bg-error-500/10'
+                          }
+                        >
+                          <td className="px-4 py-3 text-gray-600 dark:text-gray-300 whitespace-nowrap">{formatTimestamp(entry.createdAt)}</td>
+                          <td className="px-4 py-3 text-gray-800 dark:text-white/90 max-w-xs truncate" title={entry.originalQuery}>{entry.originalQuery}</td>
+                          <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{entry.spotifyCount}</td>
+                          <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{entry.beatportCount}</td>
+                          <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{entry.ingested}</td>
+                          <td className={`px-4 py-3 whitespace-nowrap font-medium ${durationColor(entry.apiDurationMs)}`}>
+                            {Math.round(entry.apiDurationMs)}ms
+                            {entry.apiDurationMs >= 15000 && (
+                              <svg className="inline-block w-4 h-4 ml-1 text-error-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                              </svg>
+                            )}
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>

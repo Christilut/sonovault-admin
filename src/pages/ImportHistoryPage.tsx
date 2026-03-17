@@ -174,20 +174,20 @@ export default function ImportHistoryPage() {
               <div className="divide-y divide-gray-100 dark:divide-gray-800">
                 {sortedDates.map(date => (
                   grouped[date].map(item => (
-                    <div key={`${date}-${item.source}`} className="flex items-center gap-4 px-4 py-3">
+                    <div key={`${date}-${item.source}`} className="flex items-center px-4 py-3">
                       <span className="text-sm text-gray-500 dark:text-gray-400 w-28 shrink-0">{formatDate(date)}</span>
                       <span
-                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white w-20 justify-center shrink-0"
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white dark:text-gray-900 w-20 justify-center shrink-0 mr-6"
                         style={{ backgroundColor: getSourceColor(item.source) }}
                       >
                         {getSourceLabel(item.source)}
                       </span>
-                      <div className="flex items-center gap-4 text-sm">
-                        {item.tracks > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.tracks.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">tracks</span></span>}
-                        {item.releases > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.releases.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">releases</span></span>}
-                        {item.artists > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.artists.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">artists</span></span>}
-                        {item.labels > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.labels.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">labels</span></span>}
-                        {item.genres > 0 && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{item.genres.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">genres</span></span>}
+                      <div className="flex items-center gap-6 text-sm">
+                        {item.tracks > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.tracks.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">tracks</span></span>}
+                        {item.releases > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.releases.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">releases</span></span>}
+                        {item.artists > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.artists.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">artists</span></span>}
+                        {item.labels > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.labels.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">labels</span></span>}
+                        {item.genres > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.genres.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">genres</span></span>}
                       </div>
                     </div>
                   ))
