@@ -83,25 +83,31 @@ export default function ApiUsagePage() {
     const dbHitsData = days.map(d => byDate[d]?.dbHits ?? 0)
     const dbMissesData = days.map(d => byDate[d]?.dbMisses ?? 0)
     const requestsInData = days.map(d => byDate[d]?.requestsIn ?? 0)
+    const otherData = days.map((d, i) => Math.max(0, requestsInData[i] - dbHitsData[i] - dbMissesData[i]))
     const labels = days.map(formatShortDate)
 
     return {
       labels,
       datasets: [
         {
-          label: 'DB Hits',
+          label: 'Search DB Hits',
           data: dbHitsData,
           backgroundColor: '#16A34A',
           borderRadius: 3,
         },
         {
-          label: 'DB Misses',
+          label: 'Search DB Misses',
           data: dbMissesData,
           backgroundColor: '#F59E0B',
           borderRadius: 3,
+        },
+        {
+          label: 'Other Requests',
+          data: otherData,
+          backgroundColor: '#9CA3AF',
+          borderRadius: 3,
         }
       ],
-      _requestsIn: requestsInData,
     }
   }, [entries, range])
 
@@ -125,11 +131,10 @@ export default function ApiUsagePage() {
         callbacks: {
           label: (ctx: { dataset: { label?: string }; parsed: { y: number | null } }) =>
             `${ctx.dataset.label}: ${(ctx.parsed.y ?? 0).toLocaleString()}`,
-          footer: (items: { dataIndex: number }[]) => {
+          footer: (items: { dataIndex: number; parsed: { y: number } }[]) => {
             if (items.length === 0) return ''
-            const idx = items[0].dataIndex
-            const total = (chartData as unknown as { _requestsIn: number[] })._requestsIn?.[idx] ?? 0
-            return `Total Requests: ${total.toLocaleString()}`
+            const total = items.reduce((sum, item) => sum + (item.parsed.y ?? 0), 0)
+            return `Total: ${total.toLocaleString()}`
           }
         }
       }
