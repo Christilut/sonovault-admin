@@ -1,4 +1,4 @@
-import { apiClient } from './client'
+import { v1Client } from './v1Client'
 
 export interface ArtistRelease {
   id: number
@@ -51,6 +51,6 @@ export interface ArtistWithRelations {
 }
 
 export async function getArtistById(id: number): Promise<ArtistWithRelations> {
-  const response = await apiClient.get<ArtistWithRelations>(`/admin/artists/${id}`)
+  const response = await v1Client.get<ArtistWithRelations>(`/artists/${id}`)
   return response.data
 }

@@ -1,4 +1,4 @@
-import { apiClient } from './client'
+import { v1Client } from './v1Client'
 
 export interface TrackArtist {
   id: number
@@ -13,19 +13,19 @@ export interface TrackSearchResult {
   release: {
     id: number
     title: string
-    artist: {
+    artist?: {
       id: number
       name: string
     }
-  }
+  } | null
   artists: TrackArtist[]
   isrc: string | null
   bpm: number | null
   key: string | null
   duration: number | null
-  popularity: number | null
-  energy: number | null
-  genres: {
+  popularity?: number | null
+  energy?: number | null
+  genres?: {
     name: string
     source: number
   }[]
@@ -45,7 +45,7 @@ export async function searchTracks(
   if (cursor) {
     params.cursor = cursor
   }
-  const response = await apiClient.get<SearchResponse>('/admin/tracks/search', { params })
+  const response = await v1Client.get<SearchResponse>('/tracks/search', { params })
   return response.data
 }
 
@@ -59,7 +59,7 @@ export async function searchTracksByArtistTitle(
   if (cursor) {
     params.cursor = cursor
   }
-  const response = await apiClient.get<SearchResponse>('/admin/tracks/search', { params })
+  const response = await v1Client.get<SearchResponse>('/tracks/search', { params })
   return response.data
 }
 
@@ -68,6 +68,16 @@ export interface IsrcSearchResponse {
 }
 
 export async function searchTrackByIsrc(isrc: string): Promise<IsrcSearchResponse> {
-  const response = await apiClient.get<IsrcSearchResponse>(`/admin/tracks/isrc/${encodeURIComponent(isrc)}`)
-  return response.data
+  try {
+    const response = await v1Client.get<TrackSearchResult>('/tracks/isrc', {
+      params: { isrc }
+    })
+    return { result: response.data }
+  } catch (err: unknown) {
+    const status = (err as { response?: { status?: number } })?.response?.status
+    if (status === 404) {
+      return { result: null }
+    }
+    throw err
+  }
 }

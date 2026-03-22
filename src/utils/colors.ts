@@ -18,7 +18,10 @@ export const thirdPartyColors = {
   tidal: '#000000',
   deezer: '#a238ff',
   discogs: '#ff5500',
-  musicbrainz: '#ba478f'
+  musicbrainz: '#ba478f',
+  applemusic: '#fa2d48',
+  billboard: '#d4a843',
+  shazam: '#08f',
 } as const
 
 // Source enum to color mapping (matches ExternalTrackSource)
@@ -42,4 +45,31 @@ export function getSourceColor(source: number): string {
 
 export function getSourceLabel(source: number): string {
   return sourceLabels[source] || `Source ${source}`
+}
+
+// Chart source colors (matches ChartSource enum from database-server)
+export const chartSourceColors: Record<string, string> = {
+  beatport: thirdPartyColors.beatport,
+  applemusic: thirdPartyColors.applemusic,
+  billboard: thirdPartyColors.billboard,
+  'shazam-global': thirdPartyColors.shazam,
+  'shazam-local': thirdPartyColors.shazam,
+  historical: '#8b5cf6',
+}
+
+export const chartSourceLabels: Record<string, string> = {
+  beatport: 'Beatport',
+  applemusic: 'Apple Music',
+  billboard: 'Billboard',
+  'shazam-global': 'Shazam Global',
+  'shazam-local': 'Shazam Local',
+  historical: 'Historical',
+}
+
+export function getChartSourceColor(sourceName: string): string {
+  return chartSourceColors[sourceName] || '#6b7280'
+}
+
+export function getChartSourceLabel(sourceName: string): string {
+  return chartSourceLabels[sourceName] || sourceName
 }

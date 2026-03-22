@@ -11,6 +11,7 @@ import StatisticsPage from '@/pages/StatisticsPage'
 import FallbacksPage from '@/pages/FallbacksPage'
 import DbHealthPage from '@/pages/DbHealthPage'
 import ApiUsagePage from '@/pages/ApiUsagePage'
+import ChartsPage from '@/pages/ChartsPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth()
@@ -35,6 +36,7 @@ export default function App() {
       >
         <Route path="/" element={<Navigate to="/search" />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/charts" element={<ChartsPage />} />
         <Route path="/artists/:id" element={<ArtistPage />} />
         <Route path="/releases/:id" element={<ReleasePage />} />
         <Route path="/statistics" element={<StatisticsPage />} />

@@ -1,4 +1,4 @@
-import { apiClient } from './client'
+import { v1Client } from './v1Client'
 
 export interface TrackArtist {
   id: number
@@ -43,6 +43,6 @@ export interface ReleaseWithTracks {
 }
 
 export async function getReleaseById(id: number): Promise<ReleaseWithTracks> {
-  const response = await apiClient.get<ReleaseWithTracks>(`/admin/releases/${id}`)
+  const response = await v1Client.get<ReleaseWithTracks>(`/releases/${id}`)
   return response.data
 }
