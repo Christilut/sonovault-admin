@@ -84,7 +84,7 @@ export default function AppSidebar() {
             </svg>
           </div>
           <span className="text-lg font-semibold text-gray-900 dark:text-white">
-            Music DB
+            BeatVault
           </span>
         </Link>
       </div>

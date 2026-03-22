@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -37,6 +37,55 @@ function formatShortDate(dateStr: string): string {
   const month = parseInt(parts[1] || '1', 10)
   const day = parseInt(parts[2] || '1', 10)
   return `${month}/${day}`
+}
+
+function formatResultKey(key: string): string {
+  return key
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/^./, c => c.toUpperCase())
+}
+
+function formatResultValue(key: string, value: unknown): string {
+  if (value === null || value === undefined) return '—'
+  if (typeof value === 'boolean') return value ? 'Yes' : 'No'
+  if (key.toLowerCase().includes('durationms') && typeof value === 'number') {
+    return value >= 60000
+      ? `${(value / 60000).toFixed(1)}m`
+      : `${(value / 1000).toFixed(1)}s`
+  }
+  if (typeof value === 'number') return value.toLocaleString()
+  if (Array.isArray(value)) {
+    if (value.length === 0) return 'None'
+    return value.join(', ')
+  }
+  if (typeof value === 'object') return JSON.stringify(value)
+  return String(value)
+}
+
+function ResultsTable({ data }: { data: Record<string, unknown> }) {
+  const entries = Object.entries(data).filter(([key]) => key !== 'errors' || (Array.isArray(data[key]) && (data[key] as unknown[]).length > 0))
+  return (
+    <table className="text-xs w-full max-w-lg mb-2">
+      <tbody>
+        {entries.map(([key, value]) => {
+          if (key === 'matching' && typeof value === 'object' && value !== null) {
+            return Object.entries(value as Record<string, unknown>).map(([subKey, subVal]) => (
+              <tr key={`matching-${subKey}`} className="border-t border-gray-100 dark:border-gray-800">
+                <td className="py-1 pr-4 text-gray-400 dark:text-gray-500 whitespace-nowrap">Match: {formatResultKey(subKey)}</td>
+                <td className="py-1 text-gray-700 dark:text-gray-300">{formatResultValue(subKey, subVal)}</td>
+              </tr>
+            ))
+          }
+          return (
+            <tr key={key} className="border-t border-gray-100 dark:border-gray-800">
+              <td className="py-1 pr-4 text-gray-400 dark:text-gray-500 whitespace-nowrap">{formatResultKey(key)}</td>
+              <td className="py-1 text-gray-700 dark:text-gray-300">{formatResultValue(key, value)}</td>
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
+  )
 }
 
 export default function ImportHistoryPage() {
@@ -141,6 +190,17 @@ export default function ImportHistoryPage() {
     }
   }
 
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
+
+  const toggleRow = useCallback((key: string) => {
+    setExpandedRows(prev => {
+      const next = new Set(prev)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      return next
+    })
+  }, [])
+
   // Group by date for the list
   const grouped: Record<string, ImportDaySummary[]> = {}
   for (const item of history) {
@@ -181,24 +241,51 @@ export default function ImportHistoryPage() {
             <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 overflow-hidden">
               <div className="divide-y divide-gray-100 dark:divide-gray-800">
                 {sortedDates.map(date => (
-                  grouped[date].map(item => (
-                    <div key={`${date}-${item.source}`} className="flex items-center px-4 py-3">
-                      <span className="text-sm text-gray-500 dark:text-gray-400 w-28 shrink-0">{formatDate(date)}</span>
-                      <span
-                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white dark:text-gray-900 w-20 justify-center shrink-0 mr-6"
-                        style={{ backgroundColor: getSourceColor(item.source) }}
-                      >
-                        {getSourceLabel(item.source)}
-                      </span>
-                      <div className="flex items-center gap-6 text-sm">
-                        {item.tracks > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.tracks.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">tracks</span></span>}
-                        {item.releases > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.releases.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">releases</span></span>}
-                        {item.artists > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.artists.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">artists</span></span>}
-                        {item.labels > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.labels.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">labels</span></span>}
-                        {item.genres > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.genres.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">genres</span></span>}
+                  grouped[date].map(item => {
+                    const rowKey = `${date}-${item.source}`
+                    const hasResults = item.results && item.results.length > 0
+                    const isExpanded = expandedRows.has(rowKey)
+                    return (
+                      <div key={rowKey}>
+                        <div
+                          className={`flex items-center px-4 py-3 ${hasResults ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50' : ''}`}
+                          onClick={hasResults ? () => toggleRow(rowKey) : undefined}
+                        >
+                          <span className="w-5 shrink-0 text-gray-400 dark:text-gray-500">
+                            {hasResults && (
+                              <svg
+                                className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                              </svg>
+                            )}
+                          </span>
+                          <span className="text-sm text-gray-500 dark:text-gray-400 w-28 shrink-0">{formatDate(date)}</span>
+                          <span
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white dark:text-gray-900 w-20 justify-center shrink-0 mr-6"
+                            style={{ backgroundColor: getSourceColor(item.source) }}
+                          >
+                            {getSourceLabel(item.source)}
+                          </span>
+                          <div className="flex items-center gap-6 text-sm">
+                            {item.tracks > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.tracks.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">tracks</span></span>}
+                            {item.releases > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.releases.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">releases</span></span>}
+                            {item.artists > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.artists.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">artists</span></span>}
+                            {item.labels > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.labels.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">labels</span></span>}
+                            {item.genres > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.genres.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">genres</span></span>}
+                          </div>
+                        </div>
+                        {isExpanded && item.results && (
+                          <div className="px-4 pb-3 pl-9">
+                            {item.results.map((run, i) => (
+                              <ResultsTable key={i} data={run} />
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  ))
+                    )
+                  })
                 ))}
               </div>
             </div>

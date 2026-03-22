@@ -35,7 +35,7 @@ export default function LoginPage() {
             </svg>
           </div>
         </div>
-        <h1 className="text-2xl font-semibold text-center text-gray-800 dark:text-white mb-1">Music Database</h1>
+        <h1 className="text-2xl font-semibold text-center text-gray-800 dark:text-white mb-1">BeatVault Admin</h1>
         <p className="text-sm text-center text-gray-500 dark:text-gray-400 mb-8">Sign in to the admin panel</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">

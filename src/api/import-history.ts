@@ -9,6 +9,7 @@ export interface ImportDaySummary {
   tracks: number
   genres: number
   total: number
+  results: Record<string, unknown>[] | null
 }
 
 export async function getImportHistory(days: number = 30): Promise<ImportDaySummary[]> {
