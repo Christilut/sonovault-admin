@@ -24,19 +24,29 @@ export const thirdPartyColors = {
   shazam: '#08f',
 } as const
 
-// Source enum to color mapping (matches ExternalTrackSource)
+// Source enum to color mapping (matches ExternalTrackSource + ChartSource)
 export const sourceColors: Record<number, string> = {
-  0: thirdPartyColors.spotify,     // Spotify
-  1: thirdPartyColors.beatport,    // Beatport
-  2: thirdPartyColors.discogs,     // Discogs
-  3: thirdPartyColors.musicbrainz  // Musicbrainz
+  0: thirdPartyColors.spotify,      // Spotify
+  1: thirdPartyColors.beatport,     // Beatport
+  2: thirdPartyColors.discogs,      // Discogs
+  3: thirdPartyColors.musicbrainz,  // Musicbrainz
+  4: thirdPartyColors.applemusic,   // Apple Music
+  10: thirdPartyColors.billboard,   // Billboard
+  11: thirdPartyColors.shazam,      // Shazam Global
+  12: thirdPartyColors.shazam,      // Shazam Local
+  20: '#8b5cf6',                    // Historical
 }
 
 export const sourceLabels: Record<number, string> = {
   0: 'Spotify',
   1: 'Beatport',
   2: 'Discogs',
-  3: 'Musicbrainz'
+  3: 'Musicbrainz',
+  4: 'Apple Music',
+  10: 'Billboard',
+  11: 'Shazam Global',
+  12: 'Shazam Local',
+  20: 'Historical',
 }
 
 export function getSourceColor(source: number): string {

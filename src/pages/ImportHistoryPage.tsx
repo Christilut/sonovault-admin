@@ -39,6 +39,24 @@ function formatShortDate(dateStr: string): string {
   return `${month}/${day}`
 }
 
+const CHART_ONLY_SOURCES = new Set([4, 10, 11, 12, 20])
+const CATALOG_ONLY_SOURCES = new Set([0, 2, 3])
+
+function getImportType(item: ImportDaySummary): 'Chart' | 'Catalog' {
+  if (CHART_ONLY_SOURCES.has(item.source)) return 'Chart'
+  if (CATALOG_ONLY_SOURCES.has(item.source)) return 'Catalog'
+  // Source 1 (Beatport) is used by both; catalog imports sync genres
+  return item.genres > 0 ? 'Catalog' : 'Chart'
+}
+
+function getMatchRate(item: ImportDaySummary): string | null {
+  if (!item.results) return null
+  for (const run of item.results) {
+    if (typeof run.matchRate === 'string') return run.matchRate
+  }
+  return null
+}
+
 function formatResultKey(key: string): string {
   return key
     .replace(/([a-z])([A-Z])/g, '$1 $2')
@@ -103,7 +121,7 @@ export default function ImportHistoryPage() {
       .finally(() => setLoading(false))
   }, [])
 
-  // Build chart data: last 30 days with Spotify (0) and Beatport (1) track counts
+  // Build chart data: last 30 days, dynamically from whatever sources appear
   const chartData = useMemo(() => {
     const days: string[] = []
     const today = new Date()
@@ -119,39 +137,25 @@ export default function ImportHistoryPage() {
 
     // Index track counts by date+source
     const tracksByDateSource: Record<string, Record<number, number>> = {}
+    const allSources = new Set<number>()
     for (const item of history) {
       const dateKey = (item.date.split('T')[0] || item.date)
       if (!tracksByDateSource[dateKey]) tracksByDateSource[dateKey] = {}
-      tracksByDateSource[dateKey][item.source] = item.tracks
+      tracksByDateSource[dateKey][item.source] = (tracksByDateSource[dateKey][item.source] ?? 0) + item.tracks
+      allSources.add(item.source)
     }
 
-    const spotifyData = days.map(d => tracksByDateSource[d]?.[0] ?? 0)
-    const beatportData = days.map(d => tracksByDateSource[d]?.[1] ?? 0)
-    const discogsData = days.map(d => tracksByDateSource[d]?.[2] ?? 0)
+    const sortedSources = [...allSources].sort((a, b) => a - b)
     const labels = days.map(formatShortDate)
 
     return {
       labels,
-      datasets: [
-        {
-          label: 'Spotify',
-          data: spotifyData,
-          backgroundColor: getSourceColor(0),
-          borderRadius: 3,
-        },
-        {
-          label: 'Beatport',
-          data: beatportData,
-          backgroundColor: getSourceColor(1),
-          borderRadius: 3,
-        },
-        {
-          label: 'Discogs',
-          data: discogsData,
-          backgroundColor: getSourceColor(2),
-          borderRadius: 3,
-        }
-      ]
+      datasets: sortedSources.map(source => ({
+        label: getSourceLabel(source),
+        data: days.map(d => tracksByDateSource[d]?.[source] ?? 0),
+        backgroundColor: getSourceColor(source),
+        borderRadius: 3,
+      }))
     }
   }, [history])
 
@@ -263,26 +267,37 @@ export default function ImportHistoryPage() {
                           </span>
                           <span className="text-sm text-gray-500 dark:text-gray-400 w-28 shrink-0">{formatDate(date)}</span>
                           <span
-                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white dark:text-gray-900 w-20 justify-center shrink-0 mr-6"
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white dark:text-gray-900 w-28 justify-center shrink-0 mr-6"
                             style={{ backgroundColor: getSourceColor(item.source) }}
                           >
                             {getSourceLabel(item.source)}
                           </span>
+                          <span className="text-xs text-gray-400 dark:text-gray-500 w-14 shrink-0">{getImportType(item)}</span>
                           <div className="flex items-center gap-6 text-sm">
                             {item.tracks > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.tracks.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">tracks</span></span>}
                             {item.releases > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.releases.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">releases</span></span>}
                             {item.artists > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.artists.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">artists</span></span>}
                             {item.labels > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.labels.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">labels</span></span>}
                             {item.genres > 0 && <span className="text-gray-700 dark:text-gray-300 w-24"><span className="font-semibold">{item.genres.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">genres</span></span>}
+                            {getImportType(item) === 'Chart' && getMatchRate(item) && <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{getMatchRate(item)}</span> <span className="text-gray-400 dark:text-gray-500">match</span></span>}
                           </div>
                         </div>
-                        {isExpanded && item.results && (
-                          <div className="px-4 pb-3 pl-9">
-                            {item.results.map((run, i) => (
-                              <ResultsTable key={i} data={run} />
-                            ))}
-                          </div>
-                        )}
+                        {isExpanded && item.results && (() => {
+                          const seen = new Set<string>()
+                          const unique = item.results!.filter(run => {
+                            const key = JSON.stringify(run)
+                            if (seen.has(key)) return false
+                            seen.add(key)
+                            return true
+                          })
+                          return (
+                            <div className="px-4 pb-3 pl-9">
+                              {unique.map((run, i) => (
+                                <ResultsTable key={i} data={run} />
+                              ))}
+                            </div>
+                          )
+                        })()}
                       </div>
                     )
                   })

@@ -118,3 +118,25 @@ export async function getDbHealthStats(): Promise<DbHealth> {
   const response = await apiClient.get<DbHealth>('/admin/stats/db-health')
   return response.data
 }
+
+export interface ServerSnapshot {
+  ts: number
+  cpu: number
+  mem: { total_mb: number; used_mb: number; pct: number }
+  disk: { total_gb: number; used_gb: number; pct: number }
+  net: { rx_mb: number; tx_mb: number }
+  load: [number, number, number]
+}
+
+export interface ServerStatsHistoryResponse {
+  hours: number
+  count: number
+  snapshots: ServerSnapshot[]
+}
+
+export async function getServerStatsHistory(hours: number): Promise<ServerStatsHistoryResponse> {
+  const response = await apiClient.get<ServerStatsHistoryResponse>('/admin/stats/server/history', {
+    params: { hours }
+  })
+  return response.data
+}

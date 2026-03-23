@@ -9,9 +9,9 @@ import ImportHistoryPage from '@/pages/ImportHistoryPage'
 import SystemMonitorPage from '@/pages/SystemMonitorPage'
 import StatisticsPage from '@/pages/StatisticsPage'
 import FallbacksPage from '@/pages/FallbacksPage'
-import DbHealthPage from '@/pages/DbHealthPage'
 import ApiUsagePage from '@/pages/ApiUsagePage'
 import ChartsPage from '@/pages/ChartsPage'
+import ServerHealthPage from '@/pages/ServerHealthPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth()
@@ -43,7 +43,7 @@ export default function App() {
         <Route path="/fallbacks" element={<FallbacksPage />} />
         <Route path="/api-usage" element={<ApiUsagePage />} />
         <Route path="/imports" element={<ImportHistoryPage />} />
-        <Route path="/db-health" element={<DbHealthPage />} />
+        <Route path="/server-health" element={<ServerHealthPage />} />
         <Route path="/monitor" element={<SystemMonitorPage />} />
       </Route>
     </Routes>
