@@ -8,12 +8,4 @@ export default defineConfig({
       '@': '/src'
     }
   },
-  server: {
-    proxy: {
-      '/ttyd': {
-        target: 'http://localhost:7681',
-        ws: true
-      }
-    }
-  }
 })

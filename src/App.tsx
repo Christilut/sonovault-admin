@@ -6,7 +6,6 @@ import SearchPage from '@/pages/SearchPage'
 import ArtistPage from '@/pages/ArtistPage'
 import ReleasePage from '@/pages/ReleasePage'
 import ImportHistoryPage from '@/pages/ImportHistoryPage'
-import SystemMonitorPage from '@/pages/SystemMonitorPage'
 import StatisticsPage from '@/pages/StatisticsPage'
 import FallbacksPage from '@/pages/FallbacksPage'
 import ApiUsagePage from '@/pages/ApiUsagePage'
@@ -44,7 +43,6 @@ export default function App() {
         <Route path="/api-usage" element={<ApiUsagePage />} />
         <Route path="/imports" element={<ImportHistoryPage />} />
         <Route path="/server-health" element={<ServerHealthPage />} />
-        <Route path="/monitor" element={<SystemMonitorPage />} />
       </Route>
     </Routes>
   )
