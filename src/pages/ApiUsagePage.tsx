@@ -83,7 +83,7 @@ export default function ApiUsagePage() {
     const dbHitsData = days.map(d => byDate[d]?.dbHits ?? 0)
     const dbMissesData = days.map(d => byDate[d]?.dbMisses ?? 0)
     const requestsInData = days.map(d => byDate[d]?.requestsIn ?? 0)
-    const otherData = days.map((d, i) => Math.max(0, requestsInData[i] - dbHitsData[i] - dbMissesData[i]))
+    const otherData = days.map((_d, i) => Math.max(0, requestsInData[i] - dbHitsData[i] - dbMissesData[i]))
     const labels = days.map(formatShortDate)
 
     return {
@@ -131,7 +131,7 @@ export default function ApiUsagePage() {
         callbacks: {
           label: (ctx: { dataset: { label?: string }; parsed: { y: number | null } }) =>
             `${ctx.dataset.label}: ${(ctx.parsed.y ?? 0).toLocaleString()}`,
-          footer: (items: { dataIndex: number; parsed: { y: number } }[]) => {
+          footer: (items: { dataIndex: number; parsed: { y: number | null } }[]) => {
             if (items.length === 0) return ''
             const total = items.reduce((sum, item) => sum + (item.parsed.y ?? 0), 0)
             return `Total: ${total.toLocaleString()}`
@@ -191,10 +191,10 @@ export default function ApiUsagePage() {
             <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 overflow-hidden">
               <div className="divide-y divide-gray-100 dark:divide-gray-800">
                 {sortedEntries.map(entry => (
-                  <div key={`${entry.date}-${entry.apiKeyLabel}`} className="flex items-center gap-4 px-4 py-3">
+                  <div key={`${entry.date}-${entry.apiKey}`} className="flex items-center gap-4 px-4 py-3">
                     <span className="text-sm text-gray-500 dark:text-gray-400 w-28 shrink-0">{formatDate(entry.date)}</span>
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-600 text-white w-24 justify-center shrink-0">
-                      {entry.apiKeyLabel}
+                      {entry.apiKey}
                     </span>
                     <div className="flex items-center gap-4 text-sm">
                       <span className="text-gray-700 dark:text-gray-300"><span className="font-semibold">{entry.requestsIn.toLocaleString()}</span> <span className="text-gray-400 dark:text-gray-500">requests</span></span>

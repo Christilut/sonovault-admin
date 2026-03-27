@@ -92,7 +92,7 @@ export async function getFallbackLogs(startDate: string, endDate: string): Promi
 
 export interface ApiUsageEntry {
   date: string
-  apiKeyLabel: string
+  apiKey: string
   requestsIn: number
   results: number
   noResults: number
