@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Oxanium:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply relative text-base font-normal font-outfit;
+    @apply relative text-[15px] leading-relaxed font-normal font-sans antialiased;
   }
 }
 
@@ -28,19 +28,19 @@
   --rdp-accent-background-color: rgba(200, 240, 74, 0.15);
   --rdp-day-height: 36px;
   --rdp-day-width: 36px;
-  color: #e5e7eb;
+  color: #f0efe8;
 }
 .dark .rdp-root .rdp-month_caption,
 .dark .rdp-root .rdp-weekday,
 .dark .rdp-root .rdp-day {
-  color: #e5e7eb;
+  color: #f0efe8;
 }
 .dark .rdp-root .rdp-button_previous,
 .dark .rdp-root .rdp-button_next {
-  color: #9ca3af;
+  color: #9a9992;
 }
 .dark .rdp-root .rdp-day.rdp-disabled {
-  color: #4b5563;
+  color: #5c5c57;
 }
 .dark .rdp-root .rdp-selected .rdp-day_button {
   background-color: #6a9a22;

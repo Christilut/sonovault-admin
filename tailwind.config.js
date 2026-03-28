@@ -4,7 +4,9 @@ export default {
   darkMode: 'class',
   theme: {
     fontFamily: {
-      outfit: ['Outfit', 'sans-serif']
+      sans: ['"DM Sans"', 'sans-serif'],
+      display: ['Oxanium', 'sans-serif'],
+      mono: ['"DM Mono"', 'monospace']
     },
     extend: {
       fontSize: {
@@ -27,40 +29,39 @@ export default {
           950: '#121F04'
         },
         gray: {
-          dark: '#1A2231',
-          25: '#FCFCFD',
-          50: '#F9FAFB',
-          100: '#F2F4F7',
-          200: '#E4E7EC',
-          300: '#D0D5DD',
-          400: '#98A2B3',
-          500: '#667085',
-          600: '#475467',
-          700: '#344054',
-          800: '#1D2939',
-          900: '#101828',
-          950: '#0C111D'
+          25: '#f5f4ef',
+          50: '#ececea',
+          100: '#e4e3de',
+          200: '#d5d4cf',
+          300: '#b0afa8',
+          400: '#9a9992',
+          500: '#888882',
+          600: '#5c5c57',
+          700: '#1e1e22',
+          800: '#18181c',
+          900: '#111113',
+          950: '#0a0a0b'
         },
         success: {
           50: '#ECFDF3',
           100: '#D1FADF',
-          400: '#32D583',
-          500: '#12B76A',
+          400: '#4ade80',
+          500: '#16a34a',
           600: '#039855',
           700: '#027A48'
         },
         error: {
           50: '#FEF3F2',
           100: '#FEE4E2',
-          400: '#F97066',
+          400: '#ff5e5e',
           500: '#F04438',
           600: '#D92D20',
           700: '#B42318'
         },
         warning: {
           50: '#FFFAEB',
-          400: '#FDB022',
-          500: '#F79009'
+          400: '#fbbf24',
+          500: '#d97706'
         },
         orange: {
           400: '#FD853A',

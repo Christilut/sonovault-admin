@@ -25,7 +25,7 @@ interface Props {
 export default function HorizontalBarChart({ data, onBarClick }: Props) {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
-  const textColor = isDark ? '#f3f4f6' : '#374151'
+  const textColor = isDark ? '#f0efe8' : '#111110'
 
   const chartData = {
     labels: data.map(d => d.label),
