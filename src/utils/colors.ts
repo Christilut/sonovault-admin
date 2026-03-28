@@ -1,5 +1,5 @@
 // Primary color
-export const primaryColor = '#5ae168'
+export const primaryColor = '#c8f04a'
 
 // Third party brand colors
 export const thirdPartyColors = {

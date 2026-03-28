@@ -29,13 +29,9 @@ export default function LoginPage() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-950">
       <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-theme-md dark:border-gray-800 dark:bg-gray-900">
         <div className="flex justify-center mb-6">
-          <div className="w-12 h-12 rounded-xl bg-brand-500 flex items-center justify-center">
-            <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-            </svg>
-          </div>
+          <img src="/logo.svg" alt="SonoVault" className="w-12 h-12" />
         </div>
-        <h1 className="text-2xl font-semibold text-center text-gray-800 dark:text-white mb-1">BeatVault Admin</h1>
+        <h1 className="text-2xl font-semibold text-center text-gray-800 dark:text-white mb-1">SonoVault Admin</h1>
         <p className="text-sm text-center text-gray-500 dark:text-gray-400 mb-8">Sign in to the admin panel</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">

@@ -24,8 +24,8 @@
 
 /* react-day-picker dark mode */
 .dark .rdp-root {
-  --rdp-accent-color: #16a34a;
-  --rdp-accent-background-color: rgba(22, 163, 74, 0.15);
+  --rdp-accent-color: #6a9a22;
+  --rdp-accent-background-color: rgba(200, 240, 74, 0.15);
   --rdp-day-height: 36px;
   --rdp-day-width: 36px;
   color: #e5e7eb;
@@ -43,11 +43,11 @@
   color: #4b5563;
 }
 .dark .rdp-root .rdp-selected .rdp-day_button {
-  background-color: #16a34a;
+  background-color: #6a9a22;
   color: #fff;
 }
 .dark .rdp-root .rdp-today:not(.rdp-selected) .rdp-day_button {
-  color: #16a34a;
+  color: #c8f04a;
   font-weight: 700;
 }
 
