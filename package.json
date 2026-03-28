@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "deploy": "git push && git checkout production && git merge master && npm test && git push && git checkout master"
+    "deploy": "git push && git checkout production && git merge master && npm test && git push && git checkout master",
+    "test": "echo \"Error: no test specified\""
   },
   "dependencies": {
     "axios": "^1.7.9",
