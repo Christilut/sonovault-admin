@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "git push && git checkout production && git merge master && npm test && git push && git checkout master"
   },
   "dependencies": {
     "axios": "^1.7.9",
