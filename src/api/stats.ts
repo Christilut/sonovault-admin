@@ -128,15 +128,60 @@ export interface ServerSnapshot {
   load: [number, number, number]
 }
 
-export interface ServerStatsHistoryResponse {
-  hours: number
-  count: number
-  snapshots: ServerSnapshot[]
+export interface DbServerSnapshot {
+  ts: number
+  connections: { active: number; idle: number; total: number; max: number }
+  cache_hit_ratio: number
+  db_size_gb: number
+  txn_rate: number
+  dead_tuple_pct: number
 }
 
-export async function getServerStatsHistory(hours: number): Promise<ServerStatsHistoryResponse> {
-  const response = await apiClient.get<ServerStatsHistoryResponse>('/admin/stats/server/history', {
+export interface EsSnapshot {
+  ts: number
+  status: 'green' | 'yellow' | 'red'
+  index_count: number
+  doc_count: number
+  store_size_mb: number
+  jvm_heap_pct: number
+}
+
+export interface AlertThreshold {
+  metric: string
+  condition: string
+}
+
+export type AlertThresholds = Record<string, AlertThreshold[]>
+
+interface StatsHistoryResponse<T> {
+  server: string
+  hours: number
+  count: number
+  snapshots: T[]
+}
+
+export async function getServerStatsHistory(hours: number): Promise<StatsHistoryResponse<ServerSnapshot>> {
+  const response = await apiClient.get<StatsHistoryResponse<ServerSnapshot>>('/admin/stats/server/sv-app1/history', {
     params: { hours }
   })
+  return response.data
+}
+
+export async function getDbStatsHistory(hours: number): Promise<StatsHistoryResponse<DbServerSnapshot>> {
+  const response = await apiClient.get<StatsHistoryResponse<DbServerSnapshot>>('/admin/stats/server/sv-db1/history', {
+    params: { hours }
+  })
+  return response.data
+}
+
+export async function getEsStatsHistory(hours: number): Promise<StatsHistoryResponse<EsSnapshot>> {
+  const response = await apiClient.get<StatsHistoryResponse<EsSnapshot>>('/admin/stats/server/es/history', {
+    params: { hours }
+  })
+  return response.data
+}
+
+export async function getAlertThresholds(): Promise<AlertThresholds> {
+  const response = await apiClient.get<AlertThresholds>('/admin/stats/alert-thresholds')
   return response.data
 }
